@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<div class="container">
+    <h3 class="mt-5">Dépenses</h3>
+    {% for depense in depenses  %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow mb-2 bg-white rounded">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-2">{{depense.libelle}}</div>
+                        <div class="col-md-2">{{depense.montant}}</div>
+                        <div class="col-md-2">{{depense.date}}</div>
+                        <div class="col-md-2">
+                            <span class="badge badge-primary">{{depense.categorie}}</span>
+                            </div>
+                        <div class="col-md-2">
+                                <a href="#" class="btn btn-sn btn-success">Modifier</a>
+                            </div>
+                            <div class="col-md-2">
+                                <a href="#" class="btn btn-sm btn-danger">Supprimer</a>
+                            </div>    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

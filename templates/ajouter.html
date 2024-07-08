@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Ajouter dépense</h3>
+            <form action="/ajouterdepense" method="POST">
+                <div class="form-group">
+                    <label for="">Date</label>
+                    <input class="form-control" type="date" name="date" id="date">
+                </div>
+                <div class="form-group">
+                    <label for="">Libellé</label>
+                    <input class="form-control" type="text" name="libelle" id="libelle">
+                </div>
+                <div class="form-group">
+                    <label for="">Montant</label>
+                    <input class="form-control" type="text" name="montant" id="montant">
+                </div>
+                <div class="form-group">
+                    <label for="">Catégorie</label>
+                    <select class="form-control" name="categorie" id="categorie">
+                        <option value="alimentation">alimentation</option>
+                        <option value="loisirs">divertissements et loisirs</option>
+                        <option value="logement">logement</option>
+                        <option value="transport">transport</option>
+                        <option value="sante">santé et bien-être</option>
+                        <option value="vetements">vêtements et accessoires</option>
+                    </select>
+                </div>
+                <input class="btn btn-danger" type="submit" value="ajouter" id="">
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
