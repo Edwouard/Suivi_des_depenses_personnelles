@@ -32,15 +32,15 @@ pipeline {
             }
         }
 
-        stage('Push Docker Image') {
-            steps {
-                script {
-                    docker.withRegistry("${DOCKER_REGISTRY}", "${DOCKER_CREDENTIALS_ID}") {
-                        docker.image("${DOCKER_IMAGE}:${env.BUILD_ID}").push()
-                    }
-                }
-            }
-        }
+        //stage('Push Docker Image') {
+            //steps {
+                //script {
+                    //docker.withRegistry("${DOCKER_REGISTRY}", "${DOCKER_CREDENTIALS_ID}") {
+                        //docker.image("${DOCKER_IMAGE}:${env.BUILD_ID}").push()
+                    //}
+                //}
+            //}
+        //}
 
         stage('Deploy') {
             steps {
