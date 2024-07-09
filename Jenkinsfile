@@ -35,7 +35,7 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    docker.withRegistry("https://${DOCKER_REGISTRY}", "${DOCKER_CREDENTIALS_ID}") {
+                    docker.withRegistry("${DOCKER_REGISTRY}", "${DOCKER_CREDENTIALS_ID}") {
                         docker.image("${DOCKER_IMAGE}:${env.BUILD_ID}").push()
                     }
                 }
@@ -48,7 +48,7 @@ pipeline {
                     // Déployez votre application Docker sur l'environnement souhaité
                     // Par exemple, en utilisant docker-compose ou des commandes Docker CLI
                     sh """
-                    docker run -d --name my-flask-app -p 5000:5000 ${DOCKER_IMAGE}:${env.BUILD_ID}
+                    docker run -d --name gestion_budget -p 5000:5000 ${DOCKER_IMAGE}:${env.BUILD_ID}
                     """
                 }
             }
