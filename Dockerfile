@@ -9,7 +9,7 @@ RUN pip install -r requirements.txt
 COPY ./app .
 
 # Commande pour initialiser la base de données
-RUN python -c "from app import app, db; app.app_context().push(); db.create_all()"
+RUN python initdb.py
 
 EXPOSE 5010
 
