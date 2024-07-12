@@ -1,12 +1,13 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.exc import IntegrityError
 from flask_login import UserMixin, LoginManager, login_user, logout_user, login_required, current_user
 import os
 
 
 project_dir = os.path.dirname(os.path.abspath(__file__))
 database_file = "sqlite:///{}".format(
-    os.path.join(project_dir, "../mydatabasetest2.db")
+    os.path.join(project_dir, "../instance/dbgestionbudget.db")
 )
 
 app = Flask(__name__)
@@ -181,4 +182,4 @@ with app.app_context():
     db.session.commit()
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(app.run(host="0.0.0.0", port="5010", debug=True))
