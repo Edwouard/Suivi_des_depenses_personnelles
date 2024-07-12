@@ -8,6 +8,8 @@ RUN pip install -r requirements.txt
 
 COPY ./app .
 
+COPY ./instance .
+
 EXPOSE 5010
 
 CMD ["gunicorn", "-b", ":5010", "wsgi:app", "--timeout", "30000", "--workers", "1"]

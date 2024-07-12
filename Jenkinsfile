@@ -54,8 +54,8 @@ pipeline {
                 script {
                     docker.withRegistry("${DOCKER_REGISTRY}", "${DOCKER_CREDENTIALS_ID}") {
                         def dockerImage = docker.build("yaogameli/${DOCKER_IMAGE}:${COMMITHASH}", "./")
-                        dockerImage.push()
-                        dockerImage.push("latest")
+                        //dockerImage.push()
+                        dockerImage.push("dev")
                     }
                 }
             }
