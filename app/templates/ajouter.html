@@ -4,23 +4,23 @@
 <div class="container">
     <div class="row">
         <div class="col-md-6">
-            <h3>Ajouter dépense</h3>
-            <form action="/ajouterdepense" method="POST">
+            <h3 class="mt-5">Ajouter dépense</h3>
+            <form id="depenseForm" method="POST" action="/ajouterdepense">
                 <div class="form-group">
-                    <label for="">Date</label>
-                    <input class="form-control" type="date" name="date" id="date">
+                    <label for="date">Date</label>
+                    <input class="form-control" type="date" name="date" id="date" required>
                 </div>
                 <div class="form-group">
-                    <label for="">Libellé</label>
-                    <input class="form-control" type="text" name="libelle" id="libelle">
+                    <label for="libelle">Libellé</label>
+                    <input class="form-control" type="text" name="libelle" id="libelle" required>
                 </div>
                 <div class="form-group">
-                    <label for="">Montant</label>
-                    <input class="form-control" type="text" name="montant" id="montant">
+                    <label for="montant">Montant</label>
+                    <input class="form-control" type="number" name="montant" id="montant" required>
                 </div>
                 <div class="form-group">
-                    <label for="">Catégorie</label>
-                    <select class="form-control" name="categorie" id="categorie">
+                    <label for="categorie">Catégorie</label>
+                    <select class="form-control" name="categorie" id="categorie" required>
                         <option value="alimentation">alimentation</option>
                         <option value="loisirs">divertissements et loisirs</option>
                         <option value="logement">logement</option>
@@ -29,9 +29,69 @@
                         <option value="vetements">vêtements et accessoires</option>
                     </select>
                 </div>
-                <input class="btn btn-danger" type="submit" value="ajouter" id="">
+                <button type="submit" class="btn btn-danger">Ajouter</button>
             </form>
         </div>
     </div>
+
+    <!-- Liste des dépenses -->
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h3 class="mt-5"></h3>
+            {% for depense in depenses %}
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card shadow mb-2 bg-white rounded">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-2">{{ depense.libelle }}</div>
+                                <div class="col-md-2">{{ depense.montant }}</div>
+                                <div class="col-md-2">{{ depense.date }}</div>
+                                <div class="col-md-2">
+                                    <span class="badge badge-primary">{{ depense.categorie }}</span>
+                                </div>
+                                <div class="col-md-2">
+                                    <a href="modifier_depense/{{ depense.id }}" class="btn btn-sm btn-success">Modifier</a>
+                                </div>
+                                <div class="col-md-2">
+                                    <a href="supprimer/{{ depense.id }}" class="btn btn-sm btn-danger">Supprimer</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 </div>
+
+<script>
+    document.getElementById('depenseForm').addEventListener('submit', function(event) {
+        var isValid = true;
+        var fields = ['date', 'libelle', 'montant', 'categorie'];
+
+        fields.forEach(function(field) {
+            var input = document.getElementById(field);
+            if (!input.value) {
+                isValid = false;
+                input.classList.add('is-invalid');
+            } else {
+                input.classList.remove('is-invalid');
+            }
+        });
+
+        if (!isValid) {
+            event.preventDefault();
+            alert('Tous les champs doivent être remplis.');
+        }
+    });
+</script>
+
+<style>
+    .is-invalid {
+        border-color: red;
+    }
+</style>
+
 {% endblock %}
