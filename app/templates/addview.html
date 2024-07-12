@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<div class="container">
+    <h3 class="mt-5">Dépenses</h3>
+    {% for depense in depenses %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow mb-2 bg-white rounded">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-2">{{ depense.libelle }}</div>
+                        <div class="col-md-2">{{ depense.montant }}</div>
+                        <div class="col-md-2">{{ depense.date }}</div>
+                        <div class="col-md-2">
+                            <span class="badge badge-primary">{{ depense.categorie }}</span>
+                        </div>
+                        <div class="col-md-2">
+                            <a href="modifier_depense/{{ depense.id }}" class="btn btn-sn btn-success">Modifier</a>
+                        </div>
+                        <div class="col-md-2">
+                            <a href="supprimer/{{ depense.id }}" class="btn btn-sm btn-danger">Supprimer</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    <div class="row mt-4">
+        <!-- Stock des dépenses -->
+        <div class="col-md-6">
+            <h3 class="md-5">Stock des dépenses</h3>
+            <div class="card shadow bb-2 bg-white rounded mb-3">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">Alimentation</div>
+                        <div id="t_alimentation" class="col-md-6 text-right">{{ t_alimentation }} XOF</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card shadow bb-2 bg-white rounded mb-3">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">Divertissements et loisirs</div>
+                        <div id="t_loisirs" class="col-md-6 text-right">{{ t_loisirs }} XOF</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card shadow bb-2 bg-white rounded mb-3">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">Logement</div>
+                        <div id="t_logement" class="col-md-6 text-right">{{ t_logement }} XOF</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card shadow bb-2 bg-white rounded mb-3">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">Transport</div>
+                        <div id="t_transport" class="col-md-6 text-right">{{ t_transport }} XOF</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card shadow bb-2 bg-white rounded mb-3">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">Santé et bien-être</div>
+                        <div id="t_sante" class="col-md-6 text-right">{{ t_sante }} XOF</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card shadow bb-2 bg-white rounded mb-3">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">Vêtements et accessoires</div>
+                        <div id="t_vetements" class="col-md-6 text-right">{{ t_vetements }} XOF</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card shadow bb-2 bg-white rounded mb-3">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">Autres</div>
+                        <div id="t_autres" class="col-md-6 text-right">{{ t_autres }} XOF</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card shadow bb-2 bg-white rounded mb-3">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">Total</div>
+                        <div class="col-md-6 text-right">{{ total }} XOF</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Visualisation des dépenses -->
+        <div class="col-md-6">
+            <h3 class="md-5">Visualisation des dépenses</h3>
+            <div class="card shadow bb-2 bg-white rounded mb-3">
+                <div class="card-body">
+                    <canvas id="myChart" width="400" height="400"></canvas>
+                </div>
+            </div>
+            <script>
+                var ctx = document.getElementById('myChart').getContext('2d');
+                const alimentationValue = parseFloat(document.getElementById('t_alimentation').innerHTML);
+                const loisirsValue = parseFloat(document.getElementById('t_loisirs').innerHTML);
+                const logementValue = parseFloat(document.getElementById('t_logement').innerHTML);
+                const transportValue = parseFloat(document.getElementById('t_transport').innerHTML);
+                const santeValue = parseFloat(document.getElementById('t_sante').innerHTML);
+                const vetementsValue = parseFloat(document.getElementById('t_vetements').innerHTML);
+                const autresValue = parseFloat(document.getElementById('t_autres').innerHTML);
+
+                var myChart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: [
+                            'Alimentation',
+                            'Divertissements et loisirs',
+                            'Logement',
+                            'Transport',
+                            'Santé et bien-être',
+                            'Vêtements et accessoires',
+                            'Autres'
+                        ],
+                        datasets: [{
+                            label: 'Montant',
+                            data: [
+                                alimentationValue,
+                                loisirsValue,
+                                logementValue,
+                                transportValue,
+                                santeValue,
+                                vetementsValue,
+                                autresValue
+                            ],
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                });
+            </script>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
