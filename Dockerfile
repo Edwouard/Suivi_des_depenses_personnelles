@@ -8,6 +8,6 @@ RUN pip install -r requirements.txt
 
 COPY ./app .
 
-EXPOSE 5000
+EXPOSE 5010
 
-ENTRYPOINT ["python3", "app.py"]
+CMD ["gunicorn", "-b", ":5010", "wsgi:app", "--timeout", "30000", "--workers", "1"]

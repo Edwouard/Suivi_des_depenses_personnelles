@@ -2,9 +2,12 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = 'gestion-buget'
-        DOCKER_REGISTRY = 'https://hub.docker.com/repository/docker/yaogameli/devops/general'
+        DOCKER_IMAGE = 'gestion-budget'
+        DOCKER_REGISTRY = 'https://index.docker.io/v1/'
         DOCKER_CREDENTIALS_ID = 'docker'
+        COMMITHASH = env.GIT_COMMIT.take(7) 
+        CONTAINER_NAME = 'my-flask-app'
+        CONTAINER_PORT = '5010'
     }
 
     stages {
@@ -32,27 +35,32 @@ pipeline {
             }
         }
 
-        //stage('Push Docker Image') {
-            //steps {
-                //script {
-                    //docker.withRegistry("${DOCKER_REGISTRY}", "${DOCKER_CREDENTIALS_ID}") {
-                        //docker.image("${DOCKER_IMAGE}:${env.BUILD_ID}").push()
-                    //}
-                //}
-            //}
-        //}
-
         stage('Deploy') {
             steps {
                 script {
-                    // Déployez votre application Docker sur l'environnement souhaité
-                    // Par exemple, en utilisant docker-compose ou des commandes Docker CLI
+                    // Démarrage du conteneur dans l'environnement de test
                     sh """
-                    docker run -d --name gestion_budget -p 5000:5000 ${DOCKER_IMAGE}:${env.BUILD_ID}
+                    docker stop ${CONTAINER_NAME} || true
+                    docker rm ${CONTAINER_NAME} || true
+                    docker run -d --name ${CONTAINER_NAME} -p ${CONTAINER_PORT}:${CONTAINER_PORT} ${DOCKER_IMAGE}:${env.BUILD_ID}
                     """
                 }
             }
         }
+    
+
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    docker.withRegistry("${DOCKER_REGISTRY}", "${DOCKER_CREDENTIALS_ID}") {
+                        def dockerImage = docker.build("yaogameli/${DOCKER_IMAGE}:${COMMITHASH}", "./")
+                        dockerImage.push()
+                        dockerImage.push("latest")
+                    }
+                }
+            }
+        }
+
     }
 
     post {
@@ -61,6 +69,7 @@ pipeline {
         }
     }
 }
+
 
 
 
