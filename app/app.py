@@ -11,6 +11,7 @@ database_file = "sqlite:///{}".format(
 )
 
 app = Flask(__name__)
+#app.config.from_object("config.config.Config")
 app.secret_key = 'super secret string'
 
 app.config["SQLALCHEMY_DATABASE_URI"] = database_file
@@ -19,7 +20,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False  # Ajout de cette ligne pou
 db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = "login_view"  # Utilisez 'login_view' ici
+login_manager.login_view = "login_view" 
 
 
 class User(UserMixin, db.Model):
@@ -170,12 +171,12 @@ def ajouterdepense():
     db.session.commit()
     return redirect("/depenses")
 
-# Convert existing montant values to integers
+# Convertir les montants en entiers
 with app.app_context():
     db.create_all()  # Création des tables
     depenses = Depense.query.all()
     for depense in depenses:
-        if depense.montant:  # Check if montant is not empty
+        if depense.montant:  # Vérifier que la valeur n'est pas vide
             depense.montant = int(depense.montant)
         else:
             depense.montant = 0
