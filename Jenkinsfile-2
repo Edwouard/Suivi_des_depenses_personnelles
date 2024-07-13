@@ -64,24 +64,23 @@ pipeline {
             steps {
                 sshagent([SSH_CREDENTIALS_ID]) {
                     sh """
-                    ssh -o StrictHostKeyChecking=no ${PRODUCTION_SERVER} '
+                    ssh -o StrictHostKeyChecking=no ${PRODUCTION_SERVER} << EOF
                         if docker ps | grep -q ${APP_NAME}; then
                             echo "Deploiement réussi: ${APP_NAME} est en cours d'exécution"
                         else
                             echo "Echec du déploiement: ${APP_NAME} n'est pas en cours d'exécution"
-                        exit 1
+                            exit 1
                         fi
-                        '
+EOF
                     """
                 }
             }
         }
-    }
     post {
         always {
             cleanWs()
         }
-                success {
+        success {
             echo 'Pipeline exécuté avec succès!'
         }
         failure {

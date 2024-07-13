@@ -17,12 +17,14 @@ Suivi_des_dépenses_personnelles est une application web conçue pour aider les 
   * Flask
   * SQLAlchemy
   * Flask-SQLAlchemy
+  * Flask-Login
   * SQLite (base de données)
 
 * Frontend :
   * HTML
   * CSS
-  * Bootstrap 4.5
+  * Bootstrap
+  * Chart.js
 * Déploiement :
   * Docker
   * Jenkins (intégration et déploiement continu)
