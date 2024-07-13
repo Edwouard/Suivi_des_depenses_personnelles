@@ -76,11 +76,6 @@ EOF
                 }
             }
         }
-    }
-                }
-            }
-        }
-    }
     post {
         always {
             cleanWs()
