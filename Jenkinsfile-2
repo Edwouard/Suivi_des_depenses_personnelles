@@ -12,7 +12,7 @@ pipeline {
         PRODUCTION_SERVER = 'yao@192.168.1.46'
         
         // Paramètre de l'application
-        APP_NAME = 'mSuivi_des_depenses'
+        APP_NAME = 'Suivi_des_depenses'
         APP_PORT = '5010'
         
         // Paramètre Git 
@@ -53,7 +53,7 @@ pipeline {
                             --cpu-shares=${CONTAINER_CPU} \\
                             --memory=${CONTAINER_MEMORY} \\
                             -e APP_PORT=${APP_PORT} \\
-                            -v gestion-budget-data:/app
+                            -v gestion-budget-db-data:/app/instance \\
                             ${DOCKER_USERNAME}/${DOCKER_IMAGE}:${COMMITHASH}
                     '
                     """
