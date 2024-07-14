@@ -1,10 +1,11 @@
-from app import app, db, Depense
+from src import create_app, db
+from src.models import Depense
 
 
 def init_db():
+    app = create_app()
     with app.app_context():
         db.create_all()
-        # Convertir les montants en entiers
         depenses = Depense.query.all()
         for depense in depenses:
             if depense.montant:
