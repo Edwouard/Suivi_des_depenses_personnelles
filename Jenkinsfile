@@ -5,6 +5,7 @@ pipeline {
         DOCKER_IMAGE = 'gestion-budget'
         DOCKER_REGISTRY = 'https://index.docker.io/v1/'
         DOCKER_CREDENTIALS_ID = 'docker'
+        DOCKER_USERNAME = 'yaogameli'
         COMMITHASH = env.GIT_COMMIT.take(7) 
         CONTAINER_NAME = 'my-flask-app'
         CONTAINER_PORT = '5010'
@@ -53,7 +54,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry("${DOCKER_REGISTRY}", "${DOCKER_CREDENTIALS_ID}") {
-                        def dockerImage = docker.build("yaogameli/${DOCKER_IMAGE}:${COMMITHASH}", "./")
+                        def dockerImage = docker.build("${DOCKER_USERNAME}/${DOCKER_IMAGE}:${COMMITHASH}", "./")
                         //dockerImage.push()
                         dockerImage.push("dev")
                     }
