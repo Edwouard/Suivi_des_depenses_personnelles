@@ -13,7 +13,7 @@ RUN pip install -r requirements.txt
 COPY ./app .
 
 # Initialiser la base de données
-RUN python -c "from app import init_db; init_db()"
+RUN python -c "from init_db import init_db; init_db()"
 
 # Exposer le port 5010 pour que l'application puisse être accessible depuis l'extérieur du conteneur
 EXPOSE 5010
