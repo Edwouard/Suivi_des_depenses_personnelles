@@ -53,6 +53,7 @@ pipeline {
                             --cpu-shares=${CONTAINER_CPU} \\
                             --memory=${CONTAINER_MEMORY} \\
                             -e APP_PORT=${APP_PORT} \\
+                            -v gestion-budget-data:/app
                             ${DOCKER_USERNAME}/${DOCKER_IMAGE}:${COMMITHASH}
                     '
                     """
