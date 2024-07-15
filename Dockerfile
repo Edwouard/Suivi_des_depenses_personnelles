@@ -1,24 +1,30 @@
-FROM python:3.9-alpine3.15
+FROM python:3.12-alpine3.19
 
-# Creer un repertoire pour l'application dans le conteneur
+# Créer un utilisateur non-root
+RUN adduser -D appuser
+
+# Créer un répertoire pour l'application et donner les permissions
 WORKDIR /app
+RUN mkdir -p ./instance && chown -R appuser:appuser /app
 
-# Créer le dossier /instance et donnez-lui les bonnes permissions
-RUN mkdir -p ./instance && chmod -R 777 ./instance
+# Copier uniquement les fichiers nécessaires pour l'installation des dépendances
+COPY requirements.txt .
 
-# Copier le fichier requirements.txt dans le conteneur
-COPY ./requirements.txt .
-# Installer les dependances
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+# Installer les dépendances et nettoyer
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt && \
+    rm -rf /root/.cache/pip
 
 # Copier le reste de l'application
-COPY . .
+COPY --chown=appuser:appuser . .
 
 # Initialiser la base de données
 RUN python -c "from src.init_db import init_db; init_db()"
 
-# Exposer le port 5010 pour que l'application puisse être accessible depuis l'extérieur du conteneur
+# Changer vers l'utilisateur non-root
+USER appuser
+
+# Exposer le port 5010
 EXPOSE 5010
 
 # Lancer l'application avec gunicorn
